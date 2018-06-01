@@ -1,0 +1,14 @@
+
+# Text to speech
+tts:
+  - platform: baidu
+    language: zh
+    app_id: id
+    api_key: key
+    secret_key: key
+    speed: 5
+    pitch: 5
+    volume: 9
+    person: 0
+
+

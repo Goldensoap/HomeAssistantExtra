@@ -1,0 +1,21 @@
+default_view:
+  view: yes
+  entities:
+    - group.environment
+    - group.heweatherAQI
+    - group.face_recognition
+    - group.weather
+    - group.hourlyforecast
+    - group.suggestion
+    - group.vlc
+    #- group.cdweather
+    - group.notify
+
+
+notify:
+  view: no
+  name: 震惊！
+  #order: 3
+  entities:
+    - persistent_notification.invalid_config
+    - persistent_notification.4663548

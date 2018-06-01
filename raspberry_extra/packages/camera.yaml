@@ -1,0 +1,11 @@
+camera:
+
+  - platform: mjpeg
+
+    mjpeg_url: yourIP/?action=stream
+
+    name: usb_camera
+
+    username: admin
+
+    password: admin

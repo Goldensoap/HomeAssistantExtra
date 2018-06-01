@@ -1,0 +1,50 @@
+﻿image_processing:
+  - platform: baidu_face_indentify
+    app_id: 'id'
+    api_key: 'key'
+    secret_key: 'key'
+    snapshot_filepath: '/config/faceid'
+    resize: 0
+    detect_top_num: 6
+    ha_url: 'yourIP'
+    ha_password: 'passwd'
+    scan_interval: 1
+    source:
+     - entity_id: camera.usb_camera
+       name: faceRec
+
+
+group:
+  face_recognition:
+    view: no
+    name: 人脸识别
+    #order: 1
+    entities:
+      - camera.usb_camera
+      - image_processing.facerec
+      - automation.face_indentify
+
+automation:
+  - alias: face_indentify
+    trigger:
+      platform: numeric_state
+      entity_id: image_processing.facerec
+      above: 0
+  
+    action:
+      - service: tts.baidu_say
+        data_template:
+          message: >
+            {% if states.image_processing.facerec.attributes.faces %}
+              {% if states.image_processing.facerec.state | int == 1 %}
+                 {{ states.image_processing.facerec.attributes["faces"][0]["name"] }} ，你好呀！
+              {% else %}
+                {% set my_test_json = states.image_processing.facerec.attributes.faces %}
+                {% for i in range(0, my_test_json | length) %}
+                是你啊！{{my_test_json[i]["name"]}}
+                {% endfor %}
+                你们好！
+              {% endif %}
+            {% else %}
+              你好，陌生人！
+            {% endif %}

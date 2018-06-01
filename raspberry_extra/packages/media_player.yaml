@@ -1,0 +1,10 @@
+media_player:
+- platform: vlc
+  name: VLC player
+
+group:
+  vlc:
+    view: no
+    name: TTS
+    entities:
+      - media_player.vlc_player
