@@ -1,0 +1,9 @@
+mqtt:
+  broker: your ip
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: username
+  password: passwd
+  discovery: true
+

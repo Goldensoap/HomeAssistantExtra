@@ -1,0 +1,20 @@
+panel_iframe:
+  docker:
+    title: dockerpanel
+    icon: mdi:wrench
+    url: http://10.26.32.14:9000
+
+  habridge:
+    title: ha-bridge
+    icon: mdi:wrench
+    url: http://10.26.32.14:8888
+    
+  news:
+    title: NEWS
+    icon: mdi:newspaper
+    url: http://10.26.32.14:8090\main
+  
+  node_red:
+    title: node_red
+    icon: mdi:vector-polyline
+    url: http://10.26.32.14:1880

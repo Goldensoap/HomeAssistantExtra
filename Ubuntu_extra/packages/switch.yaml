@@ -1,0 +1,18 @@
+switch:
+  - platform: mqtt
+    name: "curtain_on"
+    state_topic: "stat/sonoff/POWER1"
+    command_topic: "cmnd/sonoff/POWER1"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "curtain_off"
+    state_topic: "stat/sonoff/POWER2"
+    command_topic: "cmnd/sonoff/POWER2"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true

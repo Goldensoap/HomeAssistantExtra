@@ -10,7 +10,7 @@
     ha_password: 'passwd'
     scan_interval: 1
     source:
-     - entity_id: camera.usb_camera
+     - entity_id: camera.yourid
        name: faceRec
 
 
@@ -20,7 +20,7 @@ group:
     name: 人脸识别
     #order: 1
     entities:
-      - camera.usb_camera
+      - camera.yourid
       - image_processing.facerec
       - automation.face_indentify
 

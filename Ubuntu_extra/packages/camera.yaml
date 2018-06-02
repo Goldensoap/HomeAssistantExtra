@@ -1,0 +1,9 @@
+ffmpeg:
+
+camera:
+
+  - platform: ffmpeg
+
+    input: -rtsp_transport tcp -i rtsp://username:passwd@your ip/h264/ch1/main/av_stream
+
+    name: yourname

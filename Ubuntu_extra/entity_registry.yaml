@@ -1,0 +1,64 @@
+sensor.illumination_7811dcaf3847:
+  name:
+  platform: xiaomi_aqara
+  unique_id: illumination7811dcaf3847
+binary_sensor.door_window_sensor_158d0001b1bbaf:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0001b1bbaf
+binary_sensor.motion_sensor_158d0001b178a3:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0001b178a3
+binary_sensor.switch_158d0001bf5510:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0001bf5510
+switch.plug_158d0001b8fb21:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0001b8fb21
+light.gateway_light_7811dcaf3847:
+  name:
+  platform: xiaomi_aqara
+  unique_id: rgb7811dcaf3847
+sensor.pm10:
+  name:
+  platform: mqtt
+  unique_id: pm10
+sensor.lux:
+  name:
+  platform: mqtt
+  unique_id: lux
+sensor.temp:
+  name:
+  platform: mqtt
+  unique_id: temp
+sensor.humidity:
+  name:
+  platform: mqtt
+  unique_id: humidity
+sensor.pm10_2:
+  name:
+  platform: mqtt
+  unique_id: pm1.0
+sensor.pm25:
+  name:
+  platform: mqtt
+  unique_id: pm2.5
+light.lightgateway_light_7811dcaf3847:
+  name:
+  platform: hue
+  unique_id: 00:17:88:5E:D3:04-04
+light.:
+  name:
+  platform: hue
+  unique_id: 00:17:88:5E:D3:05-05
+light._2:
+  name:
+  platform: hue
+  unique_id: 00:17:88:5E:D3:06-06
+light._3:
+  name:
+  platform: hue
+  unique_id: 00:17:88:5E:D3:07-07

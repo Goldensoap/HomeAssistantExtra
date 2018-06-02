@@ -1,0 +1,64 @@
+sensor:
+  - platform: mqtt
+    name: "PM1.0"
+    state_topic: "/ESP_Easy/pms/pm1.0"
+    unit_of_measurement: "μg/m3"
+    #icon: mdi:
+    unique_id: pm1.0
+
+  - platform: mqtt
+    name: "PM2.5"
+    state_topic: "/ESP_Easy/pms/pm2.5"
+    #icon:
+    unit_of_measurement: "μg/m3"
+    unique_id: pm2.5
+
+  - platform: mqtt
+    name: "PM10"
+    state_topic: "/ESP_Easy/pms/pm10"
+    #icon:
+    unit_of_measurement: "μg/m3"
+    unique_id: pm10
+
+  - platform: mqtt
+    name: "lux"
+    state_topic: "/ESP_Easy/lux/Lux"
+    #icon:
+    unit_of_measurement: "lux"
+    unique_id: lux
+    device_class: illuminance
+
+  - platform: mqtt
+    name: "temp"
+    state_topic: "/ESP_Easy/DHT11/Temperature"
+    #icon:
+    unit_of_measurement: "℃"
+    unique_id: temp
+    device_class: temperature
+
+  - platform: mqtt
+    name: "Humidity"
+    state_topic: "/ESP_Easy/DHT11/Humidity"
+    #icon:
+    unit_of_measurement: "%"
+    unique_id: humidity
+    device_class: humidity
+
+group: 
+  environment:
+    view: no
+    name: 室内环境
+    #order: 0
+    entities:
+      - sensor.pm10
+      - sensor.pm10_2
+      - sensor.pm25
+      - sensor.temp
+      - sensor.lux
+      - sensor.humidity
+
+# Weather prediction
+
+#sensor:
+#  - platform: serial
+#    serial_port: /dev/ttyUSB0

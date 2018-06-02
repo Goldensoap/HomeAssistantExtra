@@ -1,0 +1,83 @@
+homeassistant:
+  packages: !include_dir_named packages
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 
+  longitude:
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: 
+  # Customization file
+  customize: !include customize.yaml
+  # customize_glob:
+  # "*.*":
+  #   custom_ui_state_card: state-card-custom-ui
+
+# Show links to resources in log and frontend
+#introduction:
+
+
+
+# Enables the frontend
+frontend:
+  #extra_html_url:
+  # - /local/custom_ui/state-card-custom-ui.html
+    #- /local/custom_ui/state-card-diy.html
+  #extra_html_url_es5:
+  #  - /local/custom_ui/state-card-custom-ui-es5.html
+    #- /local/custom_ui/state-card-diy.html
+
+# Enables configuration UI
+config:
+
+
+
+http:
+  #api_password: !secret http_password
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+sensor:
+  - platform: yr
+
+
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

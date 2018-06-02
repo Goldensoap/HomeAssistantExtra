@@ -1,0 +1,40 @@
+# Describes the format for available image processing services
+
+scan:
+  description: Process an image immediately.
+  fields:
+    entity_id:
+      description: Name(s) of entities to scan immediately.
+      example: 'image_processing.alpr_garage'
+
+baidu_face_indentify_registeruserface:
+  description: '上传照片，注册人脸数据，可以用其它设备导入的照片。'
+  fields:
+    user_info:
+      description: '用户标识，可以用中文'
+      example: '囧帅'
+    image:
+      description: '上传jpg文件的路径'
+      example: '/config/www/person/囧帅.jpg'
+    uid:
+      description: '人脸数据唯一标识，由数字、字母、下划线组成，长度限制128B。'
+      example: 'jiong_01'
+
+baidu_face_indentify_getuserlist:
+  description: '查询人脸数据库的uid和userinfo'
+  fields:
+    group_id:
+      description: '人脸数据分组id，默认为normal_group，可以省略，以空参数执行。'
+      example: 'normal_group'
+baidu_face_indentify_deleteuser:
+  description: '根据uid来删除人脸数据'
+  fields:
+    uid:
+      description: '人脸数据唯一标识，由数字、字母、下划线组成，长度限制128B。'
+      example: 'jiong_01'
+baidu_face_indentify_detectface:
+  description: '上传照片并执行人脸检测，返回年龄/性别/颜值等。'
+  fields:
+    image:
+      description: '上传jpg文件的路径'
+      example: '/config/www/person/囧帅.jpg'
