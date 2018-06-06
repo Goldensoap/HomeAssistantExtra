@@ -23,7 +23,9 @@ import homeassistant.util.dt as dt_util
 
 _LOGGER = logging.getLogger(__name__)
 
-TIME_BETWEEN_UPDATES = timedelta(seconds=60)
+TIME_BETWEEN_UPDATES = timedelta(seconds=600)
+
+DEFAULT_TIME = dt_util.now()
 
 CONF_CITY = "city"
 CONF_APPKEY = "appkey"
@@ -63,11 +65,15 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     appkey = config.get(CONF_APPKEY)
 
     data = WeatherData(hass, city, appkey)
+    upmsg = LocalWeather(data)
 
     yield from data.async_update(dt_util.now())
     async_track_time_interval(hass, data.async_update, TIME_BETWEEN_UPDATES)
 
-    async_add_devices([LocalWeather(data)], True)
+    yield from upmsg.async_update(dt_util.now())
+    async_track_time_interval(hass, upmsg.async_update, TIME_BETWEEN_UPDATES)
+
+    async_add_devices([upmsg], True)
 
 
 class LocalWeather(WeatherEntity):
@@ -169,7 +175,7 @@ class LocalWeather(WeatherEntity):
         return forecast_data
 
     @asyncio.coroutine
-    def async_update(self):
+    def async_update(self, now=DEFAULT_TIME):
         """update函数变成了async_update."""
         self._updatetime = self._data.updatetime
         self._name = self._data.name
@@ -180,6 +186,7 @@ class LocalWeather(WeatherEntity):
         self._pressure = self._data.pressure
         self._wind_speed = self._data.wind_speed
         self._forecast = self._data.forecast
+        _LOGGER.info("success to update informations")
 
 
 class WeatherData(object):
