@@ -23,7 +23,7 @@ import homeassistant.util.dt as dt_util
 
 _LOGGER = logging.getLogger(__name__)
 
-TIME_BETWEEN_UPDATES = timedelta(seconds=600)
+TIME_BETWEEN_UPDATES = timedelta(seconds=1800)
 
 DEFAULT_TIME = dt_util.now()
 
@@ -38,8 +38,8 @@ CONDITION_CLASSES = {
     'windy-variant': ["强风", "疾风", "大风", "烈风"],
     'hurricane': ["飓风", "龙卷风", "热带风暴", "狂暴风", "风暴"],
     'rainy': ["毛毛雨", "小雨", "中雨", "大雨", "极端降雨"],
-    'pouring': ["暴雨", "大暴雨", "特大暴雨", "阵雨", "强阵雨"],
-    #'lightning': ["阵雨", "强阵雨"],
+    'pouring': ["暴雨", "大暴雨", "特大暴雨"],
+    'lightning': ["阵雨", "强阵雨"],
     'lightning-rainy': ["雷阵雨", "强雷阵雨"],
     'fog': ["雾", "薄雾"],
     'hail': ["雷阵雨伴有冰雹"],
@@ -65,15 +65,11 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     appkey = config.get(CONF_APPKEY)
 
     data = WeatherData(hass, city, appkey)
-    upmsg = LocalWeather(data)
 
     yield from data.async_update(dt_util.now())
     async_track_time_interval(hass, data.async_update, TIME_BETWEEN_UPDATES)
 
-    yield from upmsg.async_update(dt_util.now())
-    async_track_time_interval(hass, upmsg.async_update, TIME_BETWEEN_UPDATES)
-
-    async_add_devices([upmsg], True)
+    async_add_devices([LocalWeather(data)], True)
 
 
 class LocalWeather(WeatherEntity):
@@ -106,8 +102,8 @@ class LocalWeather(WeatherEntity):
 
     @property
     def should_poll(self):
-        """No polling needed for a demo weather condition."""
-        return False
+        """attention No polling needed for a demo weather condition."""
+        return True
 
     @property
     def temperature(self):
@@ -309,7 +305,7 @@ class WeatherData(object):
         self._condition = all_result["now"]["cond"]["txt"]
         self._pressure = int(all_result["now"]["pres"])
         self._wind_speed = float(all_result["now"]["wind"]["spd"])
-        self._updatetime = datetime.now().isoformat() #all_result["basic"]["update"]["loc"]
+        self._updatetime = all_result["basic"]["update"]["loc"]
         datemsg = all_result["daily_forecast"]
         
         forec_cond = []
