@@ -23,7 +23,7 @@ import homeassistant.util.dt as dt_util
 
 _LOGGER = logging.getLogger(__name__)
 
-TIME_BETWEEN_UPDATES = timedelta(seconds=1800)
+TIME_BETWEEN_UPDATES = timedelta(seconds=600)
 
 DEFAULT_TIME = dt_util.now()
 
@@ -37,9 +37,8 @@ CONDITION_CLASSES = {
     'windy': ["有风", "微风", "和风", "清风"],
     'windy-variant': ["强风", "疾风", "大风", "烈风"],
     'hurricane': ["飓风", "龙卷风", "热带风暴", "狂暴风", "风暴"],
-    'rainy': ["毛毛雨", "小雨", "中雨", "大雨", "极端降雨"],
-    'pouring': ["暴雨", "大暴雨", "特大暴雨"],
-    'lightning': ["阵雨", "强阵雨"],
+    'rainy': ["毛毛雨", "小雨", "中雨", "大雨", "阵雨", "极端降雨"],
+    'pouring': ["暴雨", "大暴雨", "特大暴雨", "强阵雨"],
     'lightning-rainy': ["雷阵雨", "强雷阵雨"],
     'fog': ["雾", "薄雾"],
     'hail': ["雷阵雨伴有冰雹"],
@@ -185,7 +184,7 @@ class LocalWeather(WeatherEntity):
         _LOGGER.info("success to update informations")
 
 
-class WeatherData(object):
+class WeatherData():
     """天气相关的数据，存储在这个类中."""
 
     def __init__(self, hass, city, appkey):
