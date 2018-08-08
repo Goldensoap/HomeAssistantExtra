@@ -14,8 +14,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import async_track_time_interval
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import (
-    ATTR_ATTRIBUTION, TEMP_CELSIUS)
+from homeassistant.const import ATTR_ATTRIBUTION
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 import homeassistant.util.dt as dt_util
@@ -45,8 +44,9 @@ CONDITION_CLASSES = {
     'snowy-rainy': ["雨夹雪", "雨雪天气", "阵雨夹雪"],
 }
 
-# 定义三个可选项：温度、湿度、PM2.5
+
 OPTIONS = {
+    "remind": ["remind", "不良天气提醒"],
     "3hour": ["hourly_forcast_3", "未来3小时"],
     "6hour": ["hourly_forcast_6", "未来6小时"],
     "9hour": ["hourly_forcast_9", "未来9小时"],
@@ -98,7 +98,6 @@ class HeweatherWeatherSensor(Entity):
         self._object_id = OPTIONS[option][0]
         self._friendly_name = OPTIONS[option][1]
         self._icon = 'mdi:weather-'+'sunny'
-        self._unit_of_measurement = TEMP_CELSIUS
 
         self._type = option
         self._state = None
@@ -125,11 +124,6 @@ class HeweatherWeatherSensor(Entity):
         return self._icon
 
     @property
-    def unit_of_measurement(self):
-        """返回unit_of_measuremeng属性."""
-        return self._unit_of_measurement
-
-    @property
     def device_state_attributes(self):
         """设置其它一些属性值."""
         if self._state is not None:
@@ -144,60 +138,70 @@ class HeweatherWeatherSensor(Entity):
         self._updatetime = self._data.updatetime
 
         if self._type == "3hour":
-            self._state = self._data.hour_3[0]+' '+self._data.hour_3[1]+' '+self._data.hour_3[2]
+            self._state = self._data.hour_3[0]+' '+self._data.hour_3[1]+' '+self._data.hour_3[2]+'℃'
             
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_3[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "6hour":
-            self._state = self._data.hour_6[0]+' '+self._data.hour_6[1]+' '+self._data.hour_6[2]
+            self._state = self._data.hour_6[0]+' '+self._data.hour_6[1]+' '+self._data.hour_6[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_6[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "9hour":
-            self._state = self._data.hour_9[0]+' '+self._data.hour_9[1]+' '+self._data.hour_9[2]
+            self._state = self._data.hour_9[0]+' '+self._data.hour_9[1]+' '+self._data.hour_9[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_9[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "12hour":
-            self._state = self._data.hour_12[0]+' '+self._data.hour_12[1]+' '+self._data.hour_12[2]
+            self._state = self._data.hour_12[0]+' '+self._data.hour_12[1]+' '+self._data.hour_12[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_12[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "15hour":
-            self._state = self._data.hour_15[0]+' '+self._data.hour_15[1]+' '+self._data.hour_15[2]
+            self._state = self._data.hour_15[0]+' '+self._data.hour_15[1]+' '+self._data.hour_15[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_15[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "18hour":
-            self._state = self._data.hour_18[0]+' '+self._data.hour_18[1]+' '+self._data.hour_18[2]
+            self._state = self._data.hour_18[0]+' '+self._data.hour_18[1]+' '+self._data.hour_18[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_18[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "21hour":
-            self._state = self._data.hour_21[0]+' '+self._data.hour_21[1]+' '+self._data.hour_21[2]
+            self._state = self._data.hour_21[0]+' '+self._data.hour_21[1]+' '+self._data.hour_21[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_21[1] in j:
                     self._icon = 'mdi:weather-'+i
 
         elif self._type == "24hour":
-            self._state = self._data.hour_24[0]+' '+self._data.hour_24[1]+' '+self._data.hour_24[2]
+            self._state = self._data.hour_24[0]+' '+self._data.hour_24[1]+' '+self._data.hour_24[2]+'℃'
 
             for i, j in CONDITION_CLASSES.items():
                 if self._data.hour_24[1] in j:
                     self._icon = 'mdi:weather-'+i
+
+        elif self._type == "remind":
+            for i, j in CONDITION_CLASSES.items():
+                if self._data.hour_3[1] in j:
+                    if i not in ['sunny','cloudy','partlycloudy','windy']:
+                        self._state = self._data.hour_3[0]+'降雨概率为'+self._data.hour_3[2]+'%'+'可能'+self._data.hour_3[1]+'请多加注意'
+                    else:
+                        self._state = '未来几小时内无不良天气'
+                    self._icon = 'mdi:weather-'+i
+
 
 
 class WeatherData(object):
@@ -313,7 +317,7 @@ class WeatherData(object):
 
         # 根据http返回的结果，更新数据
         hourlymsg = result["result"]["HeWeather5"][0]["hourly_forecast"]
-        self._hour_3 = [hourlymsg[0]["date"][-5:], hourlymsg[0]["cond"]["txt"], hourlymsg[0]["tmp"]]
+        self._hour_3 = [hourlymsg[0]["date"][-5:], hourlymsg[0]["cond"]["txt"], hourlymsg[0]["tmp"], hourlymsg[0]["pop"]]
         self._hour_6 = [hourlymsg[1]["date"][-5:], hourlymsg[1]["cond"]["txt"], hourlymsg[1]["tmp"]]
         self._hour_9 = [hourlymsg[2]["date"][-5:], hourlymsg[2]["cond"]["txt"], hourlymsg[2]["tmp"]]
         self._hour_12 = [hourlymsg[3]["date"][-5:], hourlymsg[3]["cond"]["txt"], hourlymsg[3]["tmp"]]

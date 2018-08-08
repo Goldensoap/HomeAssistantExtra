@@ -16,3 +16,14 @@ switch:
     payload_on: "ON"
     payload_off: "OFF"
     retain: true
+  
+
+  - platform: mqtt
+    name: "door_open"
+    state_topic: "stat/sonoffdoor/POWER"
+    command_topic: "cmnd/sonoffdoor/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+

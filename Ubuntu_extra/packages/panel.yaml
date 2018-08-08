@@ -10,9 +10,9 @@ panel_iframe:
     url: http://10.26.32.14:8888
     
   news:
-    title: NEWS
+    title: tensorflow
     icon: mdi:newspaper
-    url: http://10.26.32.14:8090\main
+    url: http://10.26.32.14:8090
   
   node_red:
     title: node_red

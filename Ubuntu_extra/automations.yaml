@@ -1,18 +1,3 @@
-- alias: face_indentify
-  trigger:
-  - entity_id: image_processing.facerec
-    platform: numeric_state
-    above: 0
-  action:
-  - service: tts.baidu_say
-    data_template:
-      message: "{% if states.image_processing.facerec.attributes.faces %}\n  {% if\
-        \ states.image_processing.facerec.state | int == 1 %}\n    {{ states.image_processing.facerec.attributes[\"\
-        faces\"][0][\"name\"] }} ，你好呀！\n  {% else %}\n    {% set my_test_json = states.image_processing.facerec.attributes.faces\
-        \ %}\n    {% for i in range(0, my_test_json | length) %}\n    是你啊！{{my_test_json[i][\"\
-        name\"]}}\n    {% endfor %}\n    你们好！\n  {% endif %}\n{% else %}\n  欢迎回来！\n\
-        {% endif %}\n"
-  id: df56444f9e164283a83e29bc51650042
 - id: '1527775836810'
   alias: open_curtain
   trigger:
@@ -39,33 +24,12 @@
   - data:
       entity_id: switch.curtain_off
     service: switch.turn_off
-- id: '1527781029843'
-  alias: lifesuggestion
-  trigger:
-  - entity_id: binary_sensor.door_window_sensor_158d0001b1bbaf
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - above: '0'
-    condition: numeric_state
-    entity_id: image_processing.facerec
-  - after: sunset
-    condition: sun
-  action:
-  - data:
-      message: '{{ states.sensor.suggestion.attributes["建议"] }}'
-    service: tts.baidu_say
 - id: '1527843957091'
   alias: welcome!
   trigger:
-  - entity_id: binary_sensor.door_window_sensor_158d0001b1bbaf
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - after: sunrise
-    condition: sun
+  - event: sunrise
+    platform: sun
+  condition: []
   action:
   - data:
       entity_id: switch.curtain_off
@@ -80,3 +44,33 @@
   - data:
       entity_id: switch.curtain_on
     service: switch.turn_on
+- id: '1528439939399'
+  alias: door_dip
+  trigger:
+  - entity_id: switch.door_open
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - delay: 00:00:01
+  - data:
+      entity_id: switch.door_open
+    service: switch.turn_off
+- id: '1528556898770'
+  alias: lifesuggest
+  trigger:
+  - entity_id: automation.door_dip
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - after: 07:00:00
+    before: 09:00:00
+    condition: time
+  action:
+  - data_template:
+      message: 今天{{ states.sensor.suggestion_flu.state}}感冒，{{ states.sensor.suggestion_flu.attributes["建议"]
+        }}，此外今天{{ states.sensor.suggestion_uv.attributes["建议"] }}，Home Assistant 祝您生活愉快
+    service: tts.baidu_say
+
